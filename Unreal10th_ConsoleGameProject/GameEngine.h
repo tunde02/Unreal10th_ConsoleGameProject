@@ -8,7 +8,7 @@ private:
         std::cout << "⚙️ 엔진 생성자가 호출되었습니다! (딱 한 번만 보여야 함)" << std::endl;
     }
 public:
-    static GameEngine& GetInstance()
+    static GameEngine& Instance()
     {
         static GameEngine instance;
         return instance;

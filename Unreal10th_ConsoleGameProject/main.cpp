@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <thread>
 #include <chrono>
+#include <conio.h>
+#include <windows.h>
 
 // ==========================================
 // 1. 최상위 게임 오브젝트 추상 클래스
@@ -89,29 +91,51 @@ public:
 // 3. 구체적인 씬 구현 (메뉴 씬 & Stage 1 씬)
 // ==========================================
 class MenuScene : public BaseScene {
+private:
+    int CurrentMenuIndex = 0;
+
 public:
-    std::string a{};
-
-    MenuScene(int q)
-    {
-        a = q == 1 ? "[MenuScene] 메뉴 1  ◀" : "[MenuScene] 메뉴 1";
-    }
-
     void Enter() override { std::cout << "▶ [MenuScene] 진입: 타이틀 메뉴 생성" << std::endl; }
     void Exit() override { std::cout << "◀ [MenuScene] 탈출: 메뉴 리소스 해제" << std::endl; }
 
     void Update() override
     {
-
+        if (_kbhit())
+        {
+            int Key = _getch();
+            if (Key == 72) // ↑
+            {
+                CurrentMenuIndex--;
+                if (CurrentMenuIndex < 0)
+                {
+                    CurrentMenuIndex = 2;
+                }
+            }
+            else if (Key == 80) // ↓
+            {
+                CurrentMenuIndex++;
+                if (CurrentMenuIndex > 2)
+                {
+                    CurrentMenuIndex = 0;
+                }
+            }
+        }
     }
 
     void Render() override
     {
         std::cout << "==[MenuScene]==" << std::endl;
-        //std::cout << "[MenuScene] 메뉴 1  ◀" << std::endl;
-        std::cout << a << std::endl;
-        std::cout << "[MenuScene] 메뉴 2" << std::endl;
-        std::cout << "[MenuScene] 메뉴 3" << std::endl;
+        for (int i = 0; i < 3; i++)
+        {
+            if (CurrentMenuIndex == i)
+            {
+                printf("[MenuScene] 메뉴 %d  ◀\n", i + 1);
+            }
+            else
+            {
+                printf("[MenuScene] 메뉴 %d----\n", i + 1);
+            }
+        }
     }
 };
 
@@ -139,6 +163,21 @@ private:
     // 싱글톤 핵심: 생성자를 private으로 감춰 외부 선언 및 new 차단
     GameEngine() = default;
 
+    void SetCursorPosition(int X, int Y)
+    {
+        COORD Coord = { (SHORT)X, (SHORT)Y };
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+    }
+
+    void HideCursor()
+    {
+        HANDLE ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_CURSOR_INFO Info{};
+        Info.dwSize = 100;
+        Info.bVisible = FALSE;
+        SetConsoleCursorInfo(ConsoleHandle, &Info);
+    }
+
 public:
     ~GameEngine()
     {
@@ -151,9 +190,23 @@ public:
     GameEngine& operator=(const GameEngine&) = delete;
 
     // 전역 어디서나 단 하나의 원본 객체에 접근할 수 있는 통로 (Meyers' Singleton)
-    static GameEngine& GetInstance() {
+    static GameEngine& Instance() {
         static GameEngine instance; // 함수 내부 정적 변수: 프로그램 라이프사이클 동안 딱 '한 번'만 생성
         return instance;
+    }
+
+    void Run()
+    {
+        HideCursor();
+        system("cls");
+
+        while (true)
+        {
+            Update();
+            Render();
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        }
     }
 
     // 씬 전환 핵심 함수 (이전 씬 안전하게 해제 후 새 씬 교체)
@@ -173,7 +226,11 @@ public:
     }
 
     void Render() {
-        if (currentScene) currentScene->Render();
+        if (currentScene)
+        {
+            SetCursorPosition(0, 0);
+            currentScene->Render();
+        }
     }
 };
 
@@ -182,37 +239,21 @@ public:
 // 5. 엔트리 포인트 (실행 흐름)
 // ==========================================
 int main() {
-    std::cout << "=== 게임 프로그램 시작 ===" << std::endl;
+    GameEngine::Instance().ChangeScene(new MenuScene());
 
-    GameEngine::GetInstance().ChangeScene(new MenuScene(0));
-
-    while (true)
-    {
-        system("cls");
-
-        GameEngine::GetInstance().ChangeScene(new MenuScene(0));
-        GameEngine::GetInstance().Update();
-        GameEngine::GetInstance().Render();
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-
-        GameEngine::GetInstance().ChangeScene(new MenuScene(1));
-        GameEngine::GetInstance().Update();
-        GameEngine::GetInstance().Render();
-        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-    }
+    GameEngine::Instance().Run();
 
     // 1. 엔진 원본을 가져와 최초 메뉴 씬으로 시작
-    //GameEngine::GetInstance().ChangeScene(new MenuScene());
-    //GameEngine::GetInstance().Update();
-    //GameEngine::GetInstance().Render();
+    //GameEngine::Instance().ChangeScene(new MenuScene());
+    //GameEngine::Instance().Update();
+    //GameEngine::Instance().Render();
 
     //std::cout << "\n--- 유저가 게임 시작 버튼을 누름 ---\n" << std::endl;
 
     //// 2. 플레이 중 스테이지 1 씬으로 전격 전환
-    //GameEngine::GetInstance().ChangeScene(new Stage1Scene());
-    //GameEngine::GetInstance().Update();
-    //GameEngine::GetInstance().Render();
+    //GameEngine::Instance().ChangeScene(new Stage1Scene());
+    //GameEngine::Instance().Update();
+    //GameEngine::Instance().Render();
 
     //std::cout << "\n=== 게임 프로그램 종료 ===" << std::endl;
 
