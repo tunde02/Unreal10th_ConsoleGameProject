@@ -1,11 +1,11 @@
 #pragma once
-#include "Transform.h"
+#include "Common.h"
 #include <vector>
 #include <string>
 
-// ==========================================
-// 1. 최상위 게임 오브젝트 추상 클래스
-// ==========================================
+/// <summary>
+/// 최상위 게임 오브젝트 추상 클래스
+/// </summary>
 class GameObject
 {
 protected:
