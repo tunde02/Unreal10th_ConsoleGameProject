@@ -1,4 +1,5 @@
-﻿#include "GameEngine.h"
+﻿#include "Common.h"
+#include "GameEngine.h"
 #include "GameObject.h"
 #include "BaseScene.h"
 #include "Player.h"
