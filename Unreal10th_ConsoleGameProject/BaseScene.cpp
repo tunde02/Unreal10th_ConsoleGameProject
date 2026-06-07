@@ -40,13 +40,52 @@ void BaseScene::Update()
 
             if (CheckAABBCollision(ObjA, ObjB))
             {
-                ObjA->CancelMove();
-                ObjB->CancelMove();
+                //ObjA->CancelMove();
+                //ObjB->CancelMove();
 
-                ObjA->OnCollisionEnter(ObjB);
-                ObjB->OnCollisionEnter(ObjA);
+                //ObjA->OnCollisionEnter(ObjB);
+                //ObjB->OnCollisionEnter(ObjA);
+                ObjA->AddCurrentCollision(ObjB);
+                ObjB->AddCurrentCollision(ObjA);
             }
         }
+    }
+
+    for (auto& Obj : SceneObjects)
+    {
+        if (Obj->IsDestroyed())
+        {
+            continue;
+        }
+
+        for (auto& CurrentCollider : Obj->GetCurrentCollisions())
+        {
+            if (Obj->WasCollidedWith(CurrentCollider))
+            {
+                // 현재 충돌한 오브젝트가 PrevCollisions에 있다면
+                // 계속 충돌 중이라는 뜻이므로 OnCollisionStay()
+                Obj->OnCollisionStay(CurrentCollider);
+            }
+            else
+            {
+                // 현재 충돌한 오브젝트가 PrevCollisions에 없다면
+                // 이제 충돌하기 시작했다는 뜻이므로 OnCollisionEnter()
+                Obj->OnCollisionEnter(CurrentCollider);
+            }
+        }
+
+        for (auto& PrevCollider : Obj->GetPrevCollisions())
+        {
+            if (!Obj->IsCollidedWith(PrevCollider))
+            {
+                // 이전에 충돌했던 오브젝트가 CurrentCollisions에 없다면
+                // 충돌을 벗어났다는 뜻이므로 OnCollisionExit()
+                Obj->OnCollisionExit(PrevCollider);
+            }
+        }
+
+        // 오브젝트의 CurrentCollisions를 PrevCollisions로 갱신
+        Obj->UpdateCollisions();
     }
 
     // 3. 외곽 검사
@@ -58,7 +97,7 @@ void BaseScene::Update()
         }
 
         if (!(0 <= Obj->GetNextMinX() && Obj->GetNextMaxX() < Width_
-            && 0 <= Obj->GetNextMinY() && Obj->GetNextMaxY() < Height_))
+              && 0 <= Obj->GetNextMinY() && Obj->GetNextMaxY() < Height_))
         {
             Obj->CancelMove();
             Obj->OnCollisionEnter(nullptr);
@@ -75,12 +114,22 @@ void BaseScene::Update()
     }
 
     // 5. 지연 삭제 (Update 루프가 완전히 끝난 후 플래그가 켜진 오브젝트 일괄 제거)
-    // TODO: 별도 배열에 파괴된 오브젝트들 추가하고, for문 밖에서 이것들 delete
+    for (auto& Obj : SceneObjects)
+    {
+        if (Obj != nullptr && Obj->IsDestroyed())
+        {
+            delete Obj;
+            Obj = nullptr;
+        }
+    }
+
     SceneObjects.erase(
-        std::remove_if(SceneObjects.begin(), SceneObjects.end(),
-        [](const GameObject* obj) {
-        return obj->IsDestroyed();
-    }),
+        std::remove_if(
+            SceneObjects.begin(),
+            SceneObjects.end(),
+            [](const GameObject* obj) {
+                return obj == nullptr || obj->IsDestroyed();
+            }),
         SceneObjects.end()
     );
 }

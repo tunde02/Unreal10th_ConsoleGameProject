@@ -41,7 +41,9 @@ void Monster::OnCollisionEnter(GameObject* Other)
 {
     if (Other != nullptr && Other->GetCollisionLayer() == CollisionLayer::Player)
     {
-        printf("Monster.OnCollisionEnter() - Collide With Player : %d\n", CollisionCount);
+        bIsDestroyed_ = true;
+#if 0
+        printf("Monster.OnCollisionEnter() - Collide with Player : %d\n", CollisionCount);
         CollisionCount++;
         for (int i = 0; i < Transform_.Height; i++)
         {
@@ -50,13 +52,21 @@ void Monster::OnCollisionEnter(GameObject* Other)
                 RenderString_[i][j] = CollisionCount % 10 + L'0';
             }
         }
+        TurnAround();
+#endif
     }
     else
     {
-        printf("Monster.OnCollisionEnter() - Collide with outline. : %d\n", CollisionCount);
+        printf("Monster.OnCollisionEnter() - Collide with outlin : %d\n", CollisionCount);
         CollisionCount++;
         TurnAround();
     }
+}
+
+void Monster::OnCollisionStay(GameObject* Other)
+{
+    CollisionCount++;
+    printf("Monster.OnCollisionStay() - %d\n", CollisionCount);
 }
 
 void Monster::OnCollisionExit(GameObject* Other)
@@ -66,6 +76,5 @@ void Monster::OnCollisionExit(GameObject* Other)
 
 void Monster::TurnAround()
 {
-    //Transform_.Delta.X *= -1;
     Direction_ = (Direction_ & Direction::Right) == Direction::None ? Direction::Right : Direction::Left;
 }
