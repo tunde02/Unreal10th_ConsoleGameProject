@@ -117,12 +117,69 @@ void BaseScene::Update()
         if (!(0 <= Obj->GetNextMinX() && Obj->GetNextMaxX() < Width_))
         {
             Obj->CancelXMove();
-            Obj->OnCollisionEnter(nullptr);
+            //Obj->OnCollisionEnter(nullptr);
         }
         if (!(0 <= Obj->GetNextMinY() && Obj->GetNextMaxY() < Height_))
         {
             Obj->CancelYMove();
-            Obj->OnCollisionEnter(nullptr);
+            //Obj->OnCollisionEnter(nullptr);
+        }
+    }
+
+    for (auto& Obj : SceneObjects)
+    {
+        if (Obj->IsDestroyed() || Obj->GetCollisionLayer() == CollisionLayer::Ground)
+        {
+            continue;
+        }
+
+        if (Obj->GetCollisionLayer() == CollisionLayer::Player)
+        {
+            int a = 0;
+        }
+
+        for (auto& CurrentCollider : Obj->GetPrevCollisions())
+        {
+            if (CurrentCollider->IsDestroyed() || CurrentCollider->GetCollisionLayer() != CollisionLayer::Ground)
+            {
+                continue;
+            }
+
+            if (Obj->GetTransform().Delta.X > 0)
+            {
+                if (Obj->GetNextMaxX() > CurrentCollider->GetNextMinX()
+                    && Obj->GetNextMinX() <= CurrentCollider->GetNextMaxX()
+                    && Obj->GetUseGravity())
+                {
+                    Obj->CancelXMove();
+                }
+            }
+            else if (Obj->GetTransform().Delta.X < 0)
+            {
+                if (Obj->GetNextMinX() < CurrentCollider->GetNextMaxX()
+                    && Obj->GetNextMaxX() >= CurrentCollider->GetNextMinX()
+                    && Obj->GetUseGravity())
+                {
+                    Obj->CancelXMove();
+                }
+            }
+
+            if (Obj->GetTransform().Delta.Y > 0)
+            {
+                if (Obj->GetNextMaxY() > CurrentCollider->GetNextMinY()
+                    && Obj->GetNextMinY() <= CurrentCollider->GetNextMaxY())
+                {
+                    Obj->CancelYMove();
+                }
+            }
+            else if (Obj->GetTransform().Delta.Y < 0)
+            {
+                if (Obj->GetNextMinY() < CurrentCollider->GetNextMaxY()
+                    && Obj->GetNextMaxY() >= CurrentCollider->GetNextMinY())
+                {
+                    Obj->CancelYMove();
+                }
+            }
         }
     }
 
@@ -213,4 +270,9 @@ bool BaseScene::CheckAABBCollision(const GameObject* ObjA, const GameObject* Obj
     }
 
     return true;
+}
+
+void BaseScene::CheckWallCollision(const GameObject* ObjA)
+{
+
 }

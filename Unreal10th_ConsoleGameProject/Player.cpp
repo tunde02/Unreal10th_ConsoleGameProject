@@ -108,7 +108,7 @@ void Player::Update(int Gravity)
 
     if (JumpGauge >= 0.0f + FLT_EPSILON)
     {
-        JumpGauge -= GameEngine::Instance().GetFixedDeltaTime() * 3;
+        JumpGauge -= GameEngine::Instance().GetFixedDeltaTime() * 10;
         Transform_.Delta.Y = JumpDeltaYArray[(int)(JumpGauge * 10) / 10];
     }
     Logger::Log(2, "JumpGauge : " + std::to_string(JumpGauge));
