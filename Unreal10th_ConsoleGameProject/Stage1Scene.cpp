@@ -2,7 +2,6 @@
 #include "Player.h"
 #include "Monster.h"
 #include "Ground.h"
-#include "Wall.h"
 
 #include <iostream>
 
@@ -18,10 +17,10 @@ void Stage1Scene::Enter()
     SceneObjects.push_back(new Ground(15, 13, 30, 1));
     SceneObjects.push_back(new Ground(0, 18, 30, 1));
     SceneObjects.push_back(new Ground(0, 23, 50, 1));
-    SceneObjects.push_back(new Monster(2, 0));
-    SceneObjects.push_back(new Monster(4, 0));
-    SceneObjects.push_back(new Monster(10, 0));
-    //SceneObjects.push_back(new Player());
+    //SceneObjects.push_back(new Monster(2, 0));
+    //SceneObjects.push_back(new Monster(4, 0));
+    //SceneObjects.push_back(new Monster(10, 0));
+    SceneObjects.push_back(new Player());
 }
 
 void Stage1Scene::Exit()

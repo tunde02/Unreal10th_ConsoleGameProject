@@ -3,6 +3,10 @@
 
 class Player : public GameObject
 {
+private:
+    float JumpGauge = 0.0f;
+    const int JumpDeltaYArray[10]{ -1, -1, -1, -2, -2, -2, -2, -1, -1, -1 };
+
 public:
     Player();
 

@@ -1,4 +1,5 @@
 ﻿#include "Player.h"
+#include "GameEngine.h"
 #include <Windows.h>
 
 Player::Player()
@@ -81,16 +82,36 @@ void Player::Update(int Gravity)
         Transform_.Delta.X = 1;
     }
 
-    if (GetAsyncKeyState(VK_SPACE))
-    {
-        Transform_.Delta.Y = -2;
-    }
-
     // Gravity
-    if (bUseGravity_)
+    if (bUseGravity_ && JumpGauge <= 0.0f + FLT_EPSILON)
     {
         Transform_.Delta.Y += Gravity;
     }
+
+    // 점프
+    // space 꾹 -> 게이지가 오른다. 최대치가 있다
+    //      - 이전에 스페이스를 누르고 있었는지를 알아야함
+    //      - 공중에선 눌러도 점프할 수 없어야함
+    // IsReachedHigh - > 게이지가 최대치에 도달한 적이 있는가?
+    // deltaY[] -> (int)게이지 인덱스에 따라 다른 값
+    // 
+    if (GetAsyncKeyState(VK_SPACE))
+    {
+        //Transform_.Delta.Y = -2;
+
+        if (!bUseGravity_ && JumpGauge <= 0.0f + FLT_EPSILON)
+        {
+            //JumpGauge += GameEngine::Instance().GetFixedDeltaTime();
+            JumpGauge = 1.0f;
+        }
+    }
+
+    if (JumpGauge >= 0.0f + FLT_EPSILON)
+    {
+        JumpGauge -= GameEngine::Instance().GetFixedDeltaTime() * 3;
+        Transform_.Delta.Y = JumpDeltaYArray[(int)(JumpGauge * 10) / 10];
+    }
+    Logger::Log(2, "JumpGauge : " + std::to_string(JumpGauge));
 
     NextPosition_ = Transform_.Position + Transform_.Delta;
 }
