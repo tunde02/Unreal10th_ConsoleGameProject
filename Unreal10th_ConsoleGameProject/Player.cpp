@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include <Windows.h>
 
 Player::Player()
@@ -9,6 +9,8 @@ Player::Player()
 
     Collider_.Initialize(Transform_);
     CollisionLayer_ = CollisionLayer::Player;
+
+    bUseGravity_ = false;
 
     RenderString_.reserve(Transform_.Width * Transform_.Height);
     for (int i = 0; i < Transform_.Height; i++)
@@ -54,6 +56,43 @@ void Player::Update()
     //    NextPosition = Vector2{ Transform_.Position + Transform_.Delta };
     //    Transform_.Position = NextPosition;
     //}
+}
+
+void Player::Update(int Gravity)
+{
+    Transform_.Delta.X = 0;
+    Transform_.Delta.Y = 0;
+
+    if (GetAsyncKeyState(VK_UP)) // ↑
+    {
+        Transform_.Delta.Y = -1;
+    }
+    else if (GetAsyncKeyState(VK_DOWN)) // ↓
+    {
+        Transform_.Delta.Y = 1;
+    }
+
+    if (GetAsyncKeyState(VK_LEFT)) // ←
+    {
+        Transform_.Delta.X = -1;
+    }
+    else if (GetAsyncKeyState(VK_RIGHT)) // →
+    {
+        Transform_.Delta.X = 1;
+    }
+
+    if (GetAsyncKeyState(VK_SPACE))
+    {
+        Transform_.Delta.Y = -2;
+    }
+
+    // Gravity
+    if (bUseGravity_)
+    {
+        Transform_.Delta.Y += Gravity;
+    }
+
+    NextPosition_ = Transform_.Position + Transform_.Delta;
 }
 
 void Player::OnCollisionEnter(GameObject* Other)

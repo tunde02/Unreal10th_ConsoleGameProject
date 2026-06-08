@@ -1,4 +1,4 @@
-#include "BaseScene.h"
+﻿#include "BaseScene.h"
 
 BaseScene::BaseScene(int Width, int Height) : Width_(Width), Height_(Height) {}
 
@@ -20,7 +20,8 @@ void BaseScene::Update()
     {
         if (!Obj->IsDestroyed())
         {
-            Obj->Update();
+            //Obj->Update();
+            Obj->Update(1);
         }
     }
 
@@ -60,6 +61,11 @@ void BaseScene::Update()
 
         for (auto& CurrentCollider : Obj->GetCurrentCollisions())
         {
+            if (CurrentCollider == nullptr || CurrentCollider->IsDestroyed())
+            {
+                continue;
+            }
+
             if (Obj->WasCollidedWith(CurrentCollider))
             {
                 // 현재 충돌한 오브젝트가 PrevCollisions에 있다면
@@ -76,6 +82,11 @@ void BaseScene::Update()
 
         for (auto& PrevCollider : Obj->GetPrevCollisions())
         {
+            if (PrevCollider == nullptr || PrevCollider->IsDestroyed())
+            {
+                continue;
+            }
+
             if (!Obj->IsCollidedWith(PrevCollider))
             {
                 // 이전에 충돌했던 오브젝트가 CurrentCollisions에 없다면
@@ -96,10 +107,21 @@ void BaseScene::Update()
             continue;
         }
 
-        if (!(0 <= Obj->GetNextMinX() && Obj->GetNextMaxX() < Width_
-              && 0 <= Obj->GetNextMinY() && Obj->GetNextMaxY() < Height_))
+        //if (!(0 <= Obj->GetNextMinX() && Obj->GetNextMaxX() < Width_
+        //      && 0 <= Obj->GetNextMinY() && Obj->GetNextMaxY() < Height_))
+        //{
+        //    Obj->CancelMove();
+        //    Obj->OnCollisionEnter(nullptr);
+        //}
+
+        if (!(0 <= Obj->GetNextMinX() && Obj->GetNextMaxX() < Width_))
         {
-            Obj->CancelMove();
+            Obj->CancelXMove();
+            Obj->OnCollisionEnter(nullptr);
+        }
+        if (!(0 <= Obj->GetNextMinY() && Obj->GetNextMaxY() < Height_))
+        {
+            Obj->CancelYMove();
             Obj->OnCollisionEnter(nullptr);
         }
     }
@@ -141,7 +163,8 @@ void BaseScene::Render()
     {
         for (size_t j = 0; j < Width_; j++)
         {
-            Screen[i] += L"█";
+            //Screen[i] += L"█";
+            Screen[i] += L" ";
         }
     }
 

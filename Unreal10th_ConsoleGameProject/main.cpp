@@ -42,7 +42,8 @@ int main()
     // Need to use std::wstring
     setlocale(LC_ALL, "");
 
-    GameEngine::Instance().ChangeScene(new Stage1Scene(120, 25));
+    // Camera Size : 170x37
+    GameEngine::Instance().ChangeScene(new Stage1Scene(170, 37));
     GameEngine::Instance().Run();
 
     return 0;
