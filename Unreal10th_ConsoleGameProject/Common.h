@@ -47,7 +47,7 @@ enum class CollisionLayer
     Ground,
     Wall,
     Monster,
-    Flag
+    Bullet
 };
 
 enum class Direction
