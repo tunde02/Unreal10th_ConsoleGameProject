@@ -6,7 +6,7 @@
 GameEngine::GameEngine()
 {
     FixedDeltaTime = 1.0f / TargetFPS;
-    FrameMilliseconds = FixedDeltaTime * 1000;
+    FrameMilliseconds = static_cast<int>(FixedDeltaTime * 1000);
 }
 
 GameEngine::~GameEngine()
@@ -24,7 +24,7 @@ GameEngine& GameEngine::Instance()
 
 void GameEngine::Run()
 {
-    SetConsoleSize(1600, 800);
+    SetConsoleSize(800, 1000);
 
     HideCursor();
     system("cls");
@@ -71,6 +71,16 @@ void GameEngine::SetCursorPosition(int X, int Y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
 }
 
+GameObject* GameEngine::Instantiate(GameObject* InGameObject, const Transform& InTransform, const Vector2& InDelta)
+{
+    return currentScene->Instantiate(InGameObject, InTransform, InDelta);
+}
+
+GameObject* GameEngine::Instantiate(const GameObjectType InGameObjectType, const Transform& InTransform, const Vector2& InDelta)
+{
+    return currentScene->Instantiate(InGameObjectType, InTransform, InDelta);
+}
+
 void GameEngine::HideCursor()
 {
     HANDLE ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -99,7 +109,7 @@ void GameEngine::SetConsoleSize(int Width, int Height)
 
     // 설정할 좌표와 크기 (픽셀 단위)
     int x = 200;
-    int y = 100;
+    int y = 10;
 
     // 4. 최상위 창의 위치와 크기 변경
     MoveWindow(topWindow, x, y, Width, Height, TRUE);

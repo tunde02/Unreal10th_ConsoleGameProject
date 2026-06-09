@@ -40,6 +40,14 @@ struct Collider
     void Initialize(const Transform& InTransform);
 };
 
+enum class GameObjectType
+{
+    None,
+    Player,
+    Monster,
+    Bullet
+};
+
 enum class CollisionLayer
 {
     None,
@@ -47,7 +55,7 @@ enum class CollisionLayer
     Ground,
     Wall,
     Monster,
-    Flag
+    Bullet
 };
 
 enum class Direction

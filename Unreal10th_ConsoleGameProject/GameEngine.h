@@ -20,6 +20,8 @@ public:
     void Update();
     void Render();
     void SetCursorPosition(int X, int Y);
+    GameObject* Instantiate(GameObject* InGameObject, const Transform& InTransform, const Vector2& InDelta);
+    GameObject* Instantiate(const GameObjectType InGameObjectType, const Transform& InTransform, const Vector2& InDelta);
 
     inline float GetFixedDeltaTime() const { return FixedDeltaTime; }
 

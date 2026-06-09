@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "GameEngine.h"
+#include "Bullet.h"
 #include <Windows.h>
 
 Player::Player()
@@ -20,9 +21,12 @@ Player::Player()
         for (int j = 0; j < Transform_.Width; j++)
         {
             Str += L"O";
+            //Str += L"🔥";
         }
         RenderString_.push_back(Str);
     }
+
+    Hp = InitialHp;
 }
 
 void Player::Update()
@@ -48,15 +52,14 @@ void Player::Update()
         Transform_.Delta.X = 1;
     }
 
-    NextPosition_ = Transform_.Position + Transform_.Delta;
+    if (GetAsyncKeyState(VK_SPACE))
+    {
+        Transform BulletTransform = Transform_;
+        BulletTransform.Position.Y -= 5;
+        GameEngine::Instance().Instantiate(new Bullet(), BulletTransform,  Vector2{ 0, -1 });
+    }
 
-    //Vector2 NextPosition{ Transform_.Position + Transform_.Delta };
-    //if (0 <= NextPosition.X && NextPosition.X < 120
-    //    && 0 <= NextPosition.Y && NextPosition.Y < 29)
-    //{
-    //    NextPosition = Vector2{ Transform_.Position + Transform_.Delta };
-    //    Transform_.Position = NextPosition;
-    //}
+    NextPosition_ = Transform_.Position + Transform_.Delta;
 }
 
 void Player::Update(int Gravity)

@@ -1,4 +1,6 @@
 ﻿#include "BaseScene.h"
+#include "Monster.h"
+#include "Bullet.h"
 
 BaseScene::BaseScene(int Width, int Height) : Width_(Width), Height_(Height) {}
 
@@ -13,15 +15,59 @@ BaseScene::~BaseScene()
     SceneObjects.clear();
 }
 
+GameObject* BaseScene::Instantiate(GameObject* InGameObject, const Transform& InTransform, const Vector2& InDelta)
+{
+    GameObject* NewGameObject = InGameObject;
+    NewGameObject->Initialize(InTransform, InDelta);
+
+    SceneObjects.push_back(NewGameObject);
+
+    return NewGameObject;
+}
+
+GameObject* BaseScene::Instantiate(const GameObjectType InGameObjectType, const Transform& InTransform, const Vector2& InDelta)
+{
+    GameObject* NewGameObject = nullptr;
+    switch (InGameObjectType)
+    {
+        case GameObjectType::Monster:
+            NewGameObject = new Monster;
+            NewGameObject->Initialize(InTransform, InDelta);
+            break;
+        case GameObjectType::Bullet:
+            NewGameObject = new Bullet;
+            NewGameObject->Initialize(InTransform, InDelta);
+            break;
+        case GameObjectType::Player:
+        case GameObjectType::None:
+        default:
+            break;
+    }
+
+    if (NewGameObject == nullptr)
+    {
+        return nullptr;
+    }
+
+    SceneObjects.push_back(NewGameObject);
+
+    return NewGameObject;
+}
+
 void BaseScene::Update()
 {
     // 1. 모든 오브젝트 로직 업데이트
+    // TODO:
+    // Instantiate()로 생성된 오브젝트들이 Update() 중간에 SceneObjects에 삽입되어
+    // 반복문에서 오류가 발생하고 있는 것 같음
+    // Update()는 atomic하게 돌려야 한다?
+    // BaseScene.Instantiate()를 호출하면 생성하고 다음 프레임부터 Update() 하도록
+    // 예약 생성하는 느낌으로
     for (auto& Obj : SceneObjects)
     {
         if (!Obj->IsDestroyed())
         {
-            //Obj->Update();
-            Obj->Update(1);
+            Obj->Update();
         }
     }
 
@@ -41,9 +87,6 @@ void BaseScene::Update()
 
             if (CheckAABBCollision(ObjA, ObjB))
             {
-                //ObjA->CancelMove();
-                //ObjB->CancelMove();
-
                 //ObjA->OnCollisionEnter(ObjB);
                 //ObjB->OnCollisionEnter(ObjA);
                 ObjA->AddCurrentCollision(ObjB);
@@ -215,36 +258,10 @@ void BaseScene::Update()
 
 void BaseScene::Render()
 {
-    std::vector<std::wstring> Screen(Height_, L"");
-    for (size_t i = 0; i < Height_; i++)
-    {
-        for (size_t j = 0; j < Width_; j++)
-        {
-            //Screen[i] += L"█";
-            Screen[i] += L" ";
-        }
-    }
-
-    for (auto& obj : SceneObjects)
-    {
-        for (size_t i = 0; i < obj->GetHeight(); i++)
-        {
-            for (size_t j = 0; j < obj->GetWidth(); j++)
-            {
-                Screen[obj->GetPosition().Y + i][obj->GetPosition().X + j] = obj->GetRenderingVector()[i][j];
-            }
-        }
-    }
-
-    std::wstring Buffer{};
-    Buffer.reserve(Width_ + 1 * Height_);
-    for (int i = 0; i < Height_; i++)
-    {
-        Buffer += Screen[i];
-        Buffer += L"\n";
-    }
-
-    wprintf(L"%s", Buffer.c_str());
+    InitializeScreen();
+    RenderSceneObjects();
+    RenderStatus();
+    PrintScreen();
 }
 
 bool BaseScene::CheckAABBCollision(const GameObject* ObjA, const GameObject* ObjB)
@@ -272,7 +289,101 @@ bool BaseScene::CheckAABBCollision(const GameObject* ObjA, const GameObject* Obj
     return true;
 }
 
-void BaseScene::CheckWallCollision(const GameObject* ObjA)
+void BaseScene::InitializeScreen(const std::wstring C)
 {
+    Screen.clear();
+    Screen.assign(Height_, L"");
+    for (size_t i = 0; i < Height_; i++)
+    {
+        for (size_t j = 0; j < Width_; j++)
+        {
+            Screen[i] += C;
+        }
+    }
+}
 
+void BaseScene::RenderSceneObjects()
+{
+    for (auto& obj : SceneObjects)
+    {
+        for (size_t i = 0; i < obj->GetHeight(); i++)
+        {
+            for (size_t j = 0; j < obj->GetWidth(); j++)
+            {
+                Screen[obj->GetPosition().Y + i][obj->GetPosition().X + j] = obj->GetRenderingVector()[i][j];
+            }
+        }
+    }
+}
+
+void BaseScene::RenderStatus()
+{
+    const size_t StatusStartX = 61;
+
+    // 위, 아래 테두리
+    for (size_t i = StatusStartX; i < Width_; i++)
+    {
+        Screen[0][i] = L'█';
+        Screen[Height_ - 1][i] = L'█';
+    }
+
+    // 오른쪽 테두리
+    for (size_t i = 0; i < Height_; i++)
+    {
+        Screen[i][Width_ - 1] = L'█';
+    }
+
+    // 스테이지
+    std::wstring StageTextStr = L"S T A G E";
+    Screen[3].replace(GetTextStartX(StatusStartX, StageTextStr.length()), StageTextStr.length(), StageTextStr);
+
+    std::wstring StageNumberStr = L"1";
+    Screen[5].replace(GetTextStartX(StatusStartX, StageNumberStr.length()), StageNumberStr.length(), StageNumberStr);
+
+    for (size_t i = StatusStartX; i < Width_; i++)
+    {
+        Screen[8][i] = L'█';
+    }
+
+    // 점수
+    std::wstring ScoreTextStr = L"S C O R E";
+    Screen[11].replace(GetTextStartX(StatusStartX, ScoreTextStr.length()), ScoreTextStr.length(), ScoreTextStr);
+
+    std::wstring ScoreNumberStr = L"000,000,000";
+    Screen[13].replace(GetTextStartX(StatusStartX, ScoreNumberStr.length()), ScoreNumberStr.length(), ScoreNumberStr);
+
+    for (size_t i = StatusStartX; i < Width_; i++)
+    {
+        Screen[16][i] = L'█';
+    }
+
+    // 플레이어 체력
+    std::wstring PlayerTextStr = L"P L A Y E R";
+    Screen[19].replace(GetTextStartX(StatusStartX, PlayerTextStr.length()), PlayerTextStr.length(), PlayerTextStr);
+
+    std::wstring PlayerHpStr = L"♡ ♡ ♡";
+    Screen[21].replace(GetTextStartX(StatusStartX, PlayerHpStr.length()), PlayerHpStr.length(), PlayerHpStr);
+
+    for (size_t i = StatusStartX; i < Width_; i++)
+    {
+        Screen[24][i] = L'█';
+    }
+}
+
+size_t BaseScene::GetTextStartX(const size_t UiStartX, const size_t Length) const
+{
+    return ((Width_ - UiStartX) - Length) / 2 + UiStartX;
+}
+
+void BaseScene::PrintScreen()
+{
+    std::wstring Buffer{};
+    Buffer.reserve(Width_ + 1 * Height_);
+    for (int i = 0; i < Height_; i++)
+    {
+        Buffer += Screen[i];
+        Buffer += L"\n";
+    }
+
+    wprintf(L"%s", Buffer.c_str());
 }
