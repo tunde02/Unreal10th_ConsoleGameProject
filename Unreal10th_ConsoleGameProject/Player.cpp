@@ -20,6 +20,7 @@ Player::Player()
         for (int j = 0; j < Transform_.Width; j++)
         {
             Str += L"O";
+            //Str += L"🔥";
         }
         RenderString_.push_back(Str);
     }

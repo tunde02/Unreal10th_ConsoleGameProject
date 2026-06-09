@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameObject.h" />

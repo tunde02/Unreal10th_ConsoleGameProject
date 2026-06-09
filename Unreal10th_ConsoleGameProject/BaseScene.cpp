@@ -20,7 +20,6 @@ void BaseScene::Update()
     {
         if (!Obj->IsDestroyed())
         {
-            //Obj->Update(1);
             Obj->Update();
         }
     }
@@ -41,9 +40,6 @@ void BaseScene::Update()
 
             if (CheckAABBCollision(ObjA, ObjB))
             {
-                //ObjA->CancelMove();
-                //ObjB->CancelMove();
-
                 //ObjA->OnCollisionEnter(ObjB);
                 //ObjB->OnCollisionEnter(ObjA);
                 ObjA->AddCurrentCollision(ObjB);
