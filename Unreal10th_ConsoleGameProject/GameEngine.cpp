@@ -71,6 +71,16 @@ void GameEngine::SetCursorPosition(int X, int Y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
 }
 
+GameObject* GameEngine::Instantiate(GameObject* InGameObject, const Transform& InTransform, const Vector2& InDelta)
+{
+    return currentScene->Instantiate(InGameObject, InTransform, InDelta);
+}
+
+GameObject* GameEngine::Instantiate(const GameObjectType InGameObjectType, const Transform& InTransform, const Vector2& InDelta)
+{
+    return currentScene->Instantiate(InGameObjectType, InTransform, InDelta);
+}
+
 void GameEngine::HideCursor()
 {
     HANDLE ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);

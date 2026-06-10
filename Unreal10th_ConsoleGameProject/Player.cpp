@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "GameEngine.h"
+#include "Bullet.h"
 #include <Windows.h>
 
 Player::Player()
@@ -49,6 +50,13 @@ void Player::Update()
     else if (GetAsyncKeyState(VK_RIGHT)) // →
     {
         Transform_.Delta.X = 1;
+    }
+
+    if (GetAsyncKeyState(VK_SPACE))
+    {
+        Transform BulletTransform = Transform_;
+        BulletTransform.Position.Y -= 5;
+        GameEngine::Instance().Instantiate(new Bullet(), BulletTransform,  Vector2{ 0, -1 });
     }
 
     NextPosition_ = Transform_.Position + Transform_.Delta;

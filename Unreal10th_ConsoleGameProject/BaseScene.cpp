@@ -1,4 +1,6 @@
 ﻿#include "BaseScene.h"
+#include "Monster.h"
+#include "Bullet.h"
 
 BaseScene::BaseScene(int Width, int Height) : Width_(Width), Height_(Height) {}
 
@@ -13,9 +15,54 @@ BaseScene::~BaseScene()
     SceneObjects.clear();
 }
 
+GameObject* BaseScene::Instantiate(GameObject* InGameObject, const Transform& InTransform, const Vector2& InDelta)
+{
+    GameObject* NewGameObject = InGameObject;
+    NewGameObject->Initialize(InTransform, InDelta);
+
+    SceneObjects.push_back(NewGameObject);
+
+    return NewGameObject;
+}
+
+GameObject* BaseScene::Instantiate(const GameObjectType InGameObjectType, const Transform& InTransform, const Vector2& InDelta)
+{
+    GameObject* NewGameObject = nullptr;
+    switch (InGameObjectType)
+    {
+        case GameObjectType::Monster:
+            NewGameObject = new Monster;
+            NewGameObject->Initialize(InTransform, InDelta);
+            break;
+        case GameObjectType::Bullet:
+            NewGameObject = new Bullet;
+            NewGameObject->Initialize(InTransform, InDelta);
+            break;
+        case GameObjectType::Player:
+        case GameObjectType::None:
+        default:
+            break;
+    }
+
+    if (NewGameObject == nullptr)
+    {
+        return nullptr;
+    }
+
+    SceneObjects.push_back(NewGameObject);
+
+    return NewGameObject;
+}
+
 void BaseScene::Update()
 {
     // 1. 모든 오브젝트 로직 업데이트
+    // TODO:
+    // Instantiate()로 생성된 오브젝트들이 Update() 중간에 SceneObjects에 삽입되어
+    // 반복문에서 오류가 발생하고 있는 것 같음
+    // Update()는 atomic하게 돌려야 한다?
+    // BaseScene.Instantiate()를 호출하면 생성하고 다음 프레임부터 Update() 하도록
+    // 예약 생성하는 느낌으로
     for (auto& Obj : SceneObjects)
     {
         if (!Obj->IsDestroyed())

@@ -17,7 +17,10 @@ void Stage1Scene::Enter()
 
     SceneObjects.push_back(new Wall(0, 0, 1, 48));
     SceneObjects.push_back(new Wall(60, 0, 1, 48));
-    SceneObjects.push_back(new Bullet(10, 3, 0, 1));
+    SceneObjects.push_back(new Wall(0, 0, 60, 1));
+    SceneObjects.push_back(new Wall(0, 47, 60, 1));
+    SceneObjects.push_back(new Bullet(10, 3, 1, 1));
+    SceneObjects.push_back(new Bullet(10, 3, 2, 1));
     //SceneObjects.push_back(new Wall(0, 0, 1, 24));
     //SceneObjects.push_back(new Wall(0, 0, 1, 24));
 
@@ -29,8 +32,8 @@ void Stage1Scene::Enter()
     //SceneObjects.push_back(new Monster(2, 0));
     //SceneObjects.push_back(new Monster(4, 0));
     //SceneObjects.push_back(new Monster(10, 0));
-    //Player_ = new Player();
-    //SceneObjects.push_back(Player_);
+    Player_ = new Player();
+    SceneObjects.push_back(Player_);
 }
 
 void Stage1Scene::Exit()

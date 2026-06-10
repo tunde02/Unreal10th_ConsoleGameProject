@@ -22,6 +22,9 @@ public:
     virtual void Enter() = 0;  // 씬 시작 시 (데이터 로드, 배치)
     virtual void Exit() = 0;   // 씬 종료 시 (자원 해제)
 
+    GameObject* Instantiate(GameObject* InGameObject, const Transform& InTransform, const Vector2& InDelta);
+    GameObject* Instantiate(const GameObjectType InGameObjectType, const Transform& InTransform, const Vector2& InDelta);
+
     // 현재 씬에 속한 오브젝트들 업데이트 및 지연 삭제 처리
     virtual void Update();
 

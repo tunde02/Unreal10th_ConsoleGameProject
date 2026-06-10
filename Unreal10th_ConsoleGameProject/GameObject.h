@@ -11,6 +11,7 @@ class GameObject
 {
 protected:
     Transform Transform_{};
+    Vector2 Delta_{};
     Vector2 NextPosition_{};
     Collider Collider_{};
     CollisionLayer CollisionLayer_ = CollisionLayer::None;
@@ -38,6 +39,9 @@ public:
     virtual void OnCollisionStay(GameObject* Other) {}
     virtual void OnCollisionExit(GameObject* Other) {}
 
+    void Initialize(const Transform InTransform, const Vector2 InDelta);
+    void UpdateCollisions();
+
     inline void Destroy() { bIsDestroyed_ = true; }
     inline bool IsDestroyed() const { return bIsDestroyed_; }
     inline bool GetUseGravity() const { return bUseGravity_; }
@@ -45,7 +49,6 @@ public:
     inline void AddCurrentCollision(GameObject* Other) { CurrentCollisions.insert(Other); }
     inline bool WasCollidedWith(GameObject* Other) { return PrevCollisions.count(Other) > 0; }
     inline bool IsCollidedWith(GameObject* Other) { return CurrentCollisions.count(Other) > 0; }
-    void UpdateCollisions();
 
     inline CollisionLayer GetCollisionLayer() const { return CollisionLayer_; }
     inline std::unordered_set<GameObject*> GetCurrentCollisions() const { return CurrentCollisions; }
@@ -59,5 +62,7 @@ public:
     inline int GetNextMaxX() const { return NextPosition_.X + static_cast<int>(Transform_.Width); }
     inline int GetNextMinY() const { return NextPosition_.Y; }
     inline int GetNextMaxY() const { return NextPosition_.Y + static_cast<int>(Transform_.Height); }
+    inline Vector2 GetDelta() const { return Delta_; }
+    inline void SetDelta(Vector2 InDelta) { Delta_ = InDelta; }
     inline std::vector<std::wstring> GetRenderingVector() const { return RenderString_; }
 };

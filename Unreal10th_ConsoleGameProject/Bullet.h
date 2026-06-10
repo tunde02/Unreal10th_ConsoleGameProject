@@ -12,5 +12,4 @@ public:
     virtual void OnCollisionEnter(GameObject* Other) override;
 
 private:
-    Direction Direction_ = Direction::None;
 };
