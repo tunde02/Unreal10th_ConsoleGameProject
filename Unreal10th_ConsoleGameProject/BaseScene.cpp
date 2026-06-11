@@ -416,7 +416,13 @@ void BaseScene::RenderStatus()
     std::wstring PlayerTextStr = L"P L A Y E R";
     Screen[19].replace(GetTextStartX(StatusStartX, PlayerTextStr.length()), PlayerTextStr.length(), PlayerTextStr);
 
-    std::wstring PlayerHpStr = L"♡ ♡ ♡";
+    //std::wstring PlayerHpStr = L"♡ ♡ ♡";
+    std::wstring PlayerHpStr = L"";
+    for (int i = 0; i < Player_->GetHp() - 1; i++)
+    {
+        PlayerHpStr += L"♡ ";
+    }
+    PlayerHpStr += L"♡";
     Screen[21].replace(GetTextStartX(StatusStartX, PlayerHpStr.length()), PlayerHpStr.length(), PlayerHpStr);
 
     for (size_t i = StatusStartX; i < Width_; i++)

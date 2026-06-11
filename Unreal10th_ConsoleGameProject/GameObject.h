@@ -42,7 +42,7 @@ public:
     virtual void OnCollisionStay(GameObject* Other) {}
     virtual void OnCollisionExit(GameObject* Other) {}
 
-    void Initialize(const Transform InTransform, const Vector2 InDelta);
+    virtual void Initialize(const Transform InTransform, const Vector2 InDelta);
     void UpdateCollisions();
     void TakeDamage(int InDamage);
 

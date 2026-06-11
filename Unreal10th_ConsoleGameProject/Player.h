@@ -4,9 +4,8 @@
 class Player : public GameObject
 {
 private:
-    const int InitialHp = 3;
-    const int MaxHp = 5;
-    int Hp = 0;
+    const int InitialHp = 5;
+    const int MaxHp = 10;
     float JumpGauge = 0.0f;
     const int JumpDeltaYArray[10]{ -1, -1, -1, -2, -2, -2, -2, -1, -1, -1 };
 
@@ -17,6 +16,8 @@ public:
     virtual void Update(int Gravity) override;
     virtual void OnCollisionEnter(GameObject* Other) override;
     virtual void OnCollisionExit(GameObject* Other) override;
+
+    void SpawnBullet() const;
 
     inline int GetHp() const { return Hp; }
 };

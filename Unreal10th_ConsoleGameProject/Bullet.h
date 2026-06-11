@@ -8,6 +8,7 @@ public:
     Bullet(int InX, int InY, int InDeltaX, int InDeltaY);
     Bullet(const Transform& InTransform, const Vector2 InDelta, const Faction InFaction, int InHp = 1);
 
+    virtual void Initialize(const Transform InTransform, const Vector2 InDelta) override;
     virtual void Update() override;
     virtual void Update(int Gravity) override;
     virtual void OnCollisionEnter(GameObject* Other) override;

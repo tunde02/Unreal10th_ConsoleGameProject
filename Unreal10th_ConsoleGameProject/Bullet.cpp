@@ -3,19 +3,25 @@
 
 Bullet::Bullet()
 {
-    Transform_.Width = 2;
-    Transform_.Height = 2;
     NextPosition_ = Transform_.Position;
-
-    Collider_.Initialize(Transform_);
-    //CollisionLayer_ = CollisionLayer::Bullet;
+    Collider_ = Collider(Transform_, CollisionLayer::Bullet);
+    Hp = 1;
+    Damage = 1;
 
     UpdatePeriod_ = 0.04f;
 
-    RenderString_.reserve(Transform_.Width * Transform_.Height);
-    //RenderString_.push_back(L"░");
-    RenderString_.push_back(L"█ ");
-    RenderString_.push_back(L"▒ ");
+    //RenderString_.reserve(Transform_.Width * Transform_.Height);
+    //for (int i = 0; i < Transform_.Height; i++)
+    //{
+    //    std::wstring Str{};
+    //    for (int j = 0; j < Transform_.Width; j++)
+    //    {
+    //        Str += L"█";
+    //    }
+    //    RenderString_.push_back(Str);
+    //}
+    //RenderString_.push_back(L"▒");
+    //RenderString_.push_back(L"█");
 }
 
 Bullet::Bullet(int InX, int InY, int InDeltaX, int InDeltaY)
@@ -27,10 +33,7 @@ Bullet::Bullet(int InX, int InY, int InDeltaX, int InDeltaY)
     Transform_.Width = 2;
     Transform_.Height = 2;
     NextPosition_ = Transform_.Position;
-
-    Collider_.Initialize(Transform_);
-    Collider_ = Collider();
-    //CollisionLayer_ = CollisionLayer::Bullet;
+    Collider_ = Collider(Transform_, CollisionLayer::Bullet);
 
     UpdatePeriod_ = 0.04f;
 
@@ -47,15 +50,31 @@ Bullet::Bullet(const Transform& InTransform, const Vector2 InDelta, const Factio
     NextPosition_ = Transform_.Position;
     Collider_ = Collider(Transform_, CollisionLayer::Bullet);
     Hp = InHp;
+    Damage = 2;
 
     UpdatePeriod_ = 0.04f;
 
     RenderString_.reserve(Transform_.Width * Transform_.Height);
     //RenderString_.push_back(L"░");
-    RenderString_.push_back(L"█ ");
-    RenderString_.push_back(L"▒ ");
+    RenderString_.push_back(L"▒");
+    RenderString_.push_back(L"█");
 
     Faction_ = InFaction;
+}
+
+void Bullet::Initialize(const Transform InTransform, const Vector2 InDelta)
+{
+    GameObject::Initialize(InTransform, InDelta);
+    RenderString_.reserve(Transform_.Width * Transform_.Height);
+    for (int i = 0; i < Transform_.Height; i++)
+    {
+        std::wstring Str{};
+        for (int j = 0; j < Transform_.Width; j++)
+        {
+            Str += L"█";
+        }
+        RenderString_.push_back(Str);
+    }
 }
 
 void Bullet::Update()
@@ -87,6 +106,7 @@ void Bullet::OnCollisionEnter(GameObject* Other)
     }
     else if (Other->GetFaction() != Faction_)
     {
-        TakeDamage(Other->GetDamage());
+        Other->TakeDamage(Damage);
+        TakeDamage(1);
     }
 }

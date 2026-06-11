@@ -14,9 +14,10 @@ Wall::Wall(int InX, int InY, size_t InWidth, size_t InHeight)
     Transform_.Width = InWidth;
     Transform_.Height = InHeight;
     NextPosition_ = Transform_.Position;
+    Collider_ = Collider(Transform_, CollisionLayer::Wall);
 
-    Collider_.Initialize(Transform_);
-    CollisionLayer_ = CollisionLayer::Wall;
+    //Collider_.Initialize(Transform_);
+    //CollisionLayer_ = CollisionLayer::Wall;
 
     bUseGravity_ = false;
 
@@ -26,8 +27,7 @@ Wall::Wall(int InX, int InY, size_t InWidth, size_t InHeight)
         std::wstring Str{};
         for (int j =0; j < Transform_.Width; j++)
         {
-            //Str += L"█";
-            Str += L"@";
+            Str += L"█";
         }
         RenderString_.push_back(Str);
     }
