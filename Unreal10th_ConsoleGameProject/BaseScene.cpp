@@ -24,7 +24,6 @@ GameObject* BaseScene::Instantiate(GameObject* InGameObject, const Transform& In
     NewGameObject->Initialize(InTransform, InDelta);
 
     InstantiateRequests.push_back(InstantiateRequest{ NewGameObject, InTransform, InDelta, InTimer });
-    //SceneObjects.push_back(NewGameObject);
 
     return NewGameObject;
 }

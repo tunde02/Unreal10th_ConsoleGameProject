@@ -9,10 +9,9 @@ public:
     Monster(int InX, int InY);
     Monster(MonsterType InMonsterType);
 
+    virtual void Initialize(const Transform& InTransform, const Vector2& InDelta) override;
     virtual void Update() override;
     virtual void OnCollisionEnter(GameObject* Other) override;
-    virtual void OnCollisionStay(GameObject* Other) override;
-    virtual void OnCollisionExit(GameObject* Other) override;
 
     void TurnAround();
     void FireBullet() const;
@@ -34,7 +33,7 @@ private:
             MonsterType::Default,
             {
                 MonsterType::Default,
-                3,
+                5,
                 3,
                 5,
                 1,
@@ -50,7 +49,7 @@ private:
             MonsterType::TripleShot,
             {
                 MonsterType::TripleShot,
-                8,
+                7,
                 5,
                 10,
                 1,
