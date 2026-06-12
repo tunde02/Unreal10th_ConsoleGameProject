@@ -30,17 +30,10 @@ private:
         size_t Height;
         int Hp;
         int Damage;
-        int Speed;
+        float Speed;
         std::vector<std::wstring> RenderString;
         Vector2 BarrelOffset;
     };
-
-    //inline static const std::map<BulletType, std::vector<std::wstring>> BulletRenderStrings = {
-    //   { BulletType::Default, { L"█", L"▒" } },
-    //   { BulletType::Upgrade_1, { L"██", L"▒▒" } },
-    //   { BulletType::Upgrade_2, { L"███", L"▒▒▒" } },
-    //   { BulletType::Upgrade_3, { L"█ █ █", L"▓ ▓ ▓", L"▒ ▒ ▒" } }
-    //};
 
     inline static const std::unordered_map<BulletType, BulletSpec> BulletSpecs = {
         {
@@ -50,7 +43,7 @@ private:
                 2,
                 1,
                 1,
-                1,
+                4.0f,
                 { L"█", L"▒" },
                 { 0, 2 }
             }
@@ -62,7 +55,7 @@ private:
                 2,
                 1,
                 2,
-                1,
+                4.0f,
                 { L"██", L"▒▒" },
                 { 0, 2 }
             }
@@ -74,7 +67,7 @@ private:
                 2,
                 2,
                 3,
-                2,
+                4.0f,
                 { L"███", L"▒▒▒" },
                 { 0, 2 }
             }
@@ -86,7 +79,7 @@ private:
                 3,
                 3,
                 2,
-                3,
+                5.0f,
                 { L"█ █ █", L"▓ ▓ ▓", L"▒ ▒ ▒" },
                 { 0, 2 }
             }

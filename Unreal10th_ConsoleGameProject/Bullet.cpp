@@ -9,19 +9,6 @@ Bullet::Bullet()
     Damage = 1;
 
     UpdatePeriod_ = 0.04f;
-
-    //RenderString_.reserve(Transform_.Width * Transform_.Height);
-    //for (int i = 0; i < Transform_.Height; i++)
-    //{
-    //    std::wstring Str{};
-    //    for (int j = 0; j < Transform_.Width; j++)
-    //    {
-    //        Str += L"█";
-    //    }
-    //    RenderString_.push_back(Str);
-    //}
-    //RenderString_.push_back(L"▒");
-    //RenderString_.push_back(L"█");
 }
 
 Bullet::Bullet(Faction InFaction, BulletType InBulletType)
@@ -117,10 +104,11 @@ void Bullet::Initialize(const Transform InTransform, const Vector2 InDelta)
     Transform_.Width = Spec.Width;
     Transform_.Height = Spec.Height;
     Delta_ = InDelta;
-    UpdatePeriod_ = 0.05f / Spec.Speed;
     NextPosition_ = Transform_.Position;
     Hp = Spec.Hp;
     Damage = Spec.Damage;
+    Speed = Spec.Speed;
+    UpdatePeriod_ = 0.05f / Speed;
     RenderString_ = Spec.RenderString;
 }
 
