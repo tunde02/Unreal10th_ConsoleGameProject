@@ -1,7 +1,7 @@
-﻿#include "Player.h"
+﻿#include <Windows.h>
+#include "Player.h"
 #include "GameEngine.h"
 #include "Bullet.h"
-#include <Windows.h>
 
 Player::Player()
 {

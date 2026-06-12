@@ -2,6 +2,7 @@
 #include <type_traits>
 #include <vector>
 #include <string>
+#include <winnt.h>
 
 enum class GameObjectType
 {
@@ -9,6 +10,14 @@ enum class GameObjectType
     Player,
     Monster,
     Bullet
+};
+
+enum class BulletType
+{
+    Default,
+    Upgrade_1,
+    Upgrade_2,
+    Upgrade_3
 };
 
 enum class CollisionLayer
@@ -47,6 +56,7 @@ struct Vector2
 
     Vector2 operator+(const Vector2& other) const;
     Vector2 operator-(const Vector2& other) const;
+    Vector2 operator*(const int multiplier) const;
     Vector2& operator=(const Vector2& other);
 };
 
