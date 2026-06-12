@@ -300,7 +300,11 @@ void BaseScene::RenderSceneObjects()
         {
             for (size_t j = 0; j < obj->GetWidth(); j++)
             {
-                Screen[obj->GetPosition().Y + i][obj->GetPosition().X + j] = obj->GetRenderingVector()[i][j];
+                if (Screen[obj->GetPosition().Y + i][obj->GetPosition().X + j] == L' '
+                    && obj->GetRenderingVector()[i][j] != L' ')
+                {
+                    Screen[obj->GetPosition().Y + i][obj->GetPosition().X + j] = obj->GetRenderingVector()[i][j];
+                }
             }
         }
     }

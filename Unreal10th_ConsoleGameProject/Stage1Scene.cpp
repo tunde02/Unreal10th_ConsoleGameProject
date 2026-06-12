@@ -24,10 +24,11 @@ void Stage1Scene::Enter()
     //SceneObjects.push_back(new Monster(4, 2));
     // 
     //SceneObjects.push_back(new Monster(10, 2));
-    Transform t{ 5, 2, 0, 0, 2, 2 };
-    for (int i = 0; i < 100; i++)
+    Transform t{ 5, 2, 0, 0, 7, 5 };
+    for (int i = 0; i < 1; i++)
     {
-        Instantiate(new Monster(10, 2), t, {}, static_cast<float>(i) / 30);
+        //Instantiate(new Monster(10, 2), t, {}, static_cast<float>(i) / 30);
+        Instantiate(new Monster(MonsterType::TripleShot), t, {}, static_cast<float>(i) / 30);
     }
     Player_ = new Player();
     SceneObjects.push_back(Player_);
