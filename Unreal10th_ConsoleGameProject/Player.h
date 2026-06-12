@@ -6,6 +6,8 @@ class Player : public GameObject
 private:
     const int InitialHp = 5;
     const int MaxHp = 10;
+    const float PlayerShotDelay = 0.066f;
+    float ShotDelay = 0.0f;
     float JumpGauge = 0.0f;
     const int JumpDeltaYArray[10]{ -1, -1, -1, -2, -2, -2, -2, -1, -1, -1 };
 

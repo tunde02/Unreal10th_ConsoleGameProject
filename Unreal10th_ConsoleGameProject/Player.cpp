@@ -11,6 +11,7 @@ Player::Player()
     Collider_ = Collider(Transform_, CollisionLayer::Player);
     Hp = InitialHp;
     Damage = 1;
+    ShotDelay = PlayerShotDelay;
 
     bUseGravity_ = false;
 
@@ -35,6 +36,7 @@ void Player::Update()
 {
     Transform_.Delta.X = 0;
     Transform_.Delta.Y = 0;
+    ShotDelay -= GameEngine::Instance().GetFixedDeltaTime();
 
     if (GetAsyncKeyState(VK_UP)) // ↑
     {
@@ -56,7 +58,11 @@ void Player::Update()
 
     if (GetAsyncKeyState(VK_SPACE))
     {
-        SpawnBullet();
+        if (ShotDelay <= 0.0f)
+        {
+            ShotDelay = PlayerShotDelay;
+            SpawnBullet();
+        }
         /*
         Transform BulletTransform = Transform_;
         BulletTransform.Position.Y -= 2;
@@ -141,7 +147,7 @@ void Player::SpawnBullet() const
     // 플레이어의 위치, 크기와 총알의 프리셋에 따른 크기에 따라 생성 위치 조절
     Transform BulletTransform = Transform_;
     BulletTransform.Position.X += 1;
-    BulletTransform.Position.Y -= 1;
+    BulletTransform.Position.Y -= 2;
     BulletTransform.Width = 1;
     BulletTransform.Height = 2;
 
