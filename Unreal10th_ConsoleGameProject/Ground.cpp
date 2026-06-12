@@ -57,11 +57,6 @@ void Ground::Update()
 {
 }
 
-void Ground::Update(int Gravity)
-{
-
-}
-
 void Ground::OnCollisionEnter(GameObject* Other)
 {
     if (Other == nullptr)

@@ -37,10 +37,6 @@ void Wall::Update()
 {
 }
 
-void Wall::Update(int Gravity)
-{
-}
-
 void Wall::OnCollisionEnter(GameObject* Other)
 {
 }
