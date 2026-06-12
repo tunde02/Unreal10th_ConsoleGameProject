@@ -18,7 +18,7 @@ public:
     virtual void OnCollisionEnter(GameObject* Other) override;
     virtual void OnCollisionExit(GameObject* Other) override;
 
-    void SpawnBullet() const;
+    void FireBullet() const;
 
     inline int GetHp() const { return Hp; }
 };

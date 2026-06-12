@@ -13,6 +13,7 @@ Player::Player()
     Damage = 1;
     Faction_ = Faction::Player;
     ShotDelay = PlayerShotDelay;
+    CurrentBulletType = BulletType::Default;
 
     RenderString_.push_back(L" ▲ ");
     RenderString_.push_back(L"║▇║");
@@ -48,16 +49,8 @@ void Player::Update()
         if (ShotDelay <= 0.0f)
         {
             ShotDelay = PlayerShotDelay;
-            SpawnBullet();
+            FireBullet();
         }
-        /*
-        Transform BulletTransform = Transform_;
-        BulletTransform.Position.Y -= 2;
-        BulletTransform.Width = 1;
-        BulletTransform.Height = 2;
-        //Bullet NewBullet = new Bullet()
-        GameEngine::Instance().Instantiate(new Bullet(), BulletTransform, Vector2{ 0, -1 });
-        */
     }
 
     NextPosition_ = Transform_.Position + Transform_.Delta;
@@ -71,17 +64,16 @@ void Player::OnCollisionExit(GameObject* Other)
 {
 }
 
-void Player::SpawnBullet() const
+void Player::FireBullet() const
 {
-    // TODO:
-    // 플레이어의 위치, 크기와 총알의 프리셋에 따른 크기에 따라 생성 위치 조절
-    Transform BulletTransform = Transform_;
-    BulletTransform.Position.X += 1;
-    BulletTransform.Position.Y -= 2;
-    BulletTransform.Width = 1;
-    BulletTransform.Height = 2;
-
+    // 플레이어의 위치, 크기와 총알의 따른 크기에 따라 총알의 생성 위치 조절
+    // - OffsetX : Player.Width/2 - Bullet.Width/2
+    // - OffsetY : -Bullet.Height
+    Bullet* FiredBullet = new Bullet(Faction_, CurrentBulletType);
     Vector2 BulletDelta{ 0, -1 };
+    Transform BulletTransform{};
+    BulletTransform.Position.X = Transform_.Position.X + Transform_.Delta.X + static_cast<int>((Transform_.Width / 2) - (FiredBullet->GetWidth() / 2));
+    BulletTransform.Position.Y = Transform_.Position.Y + Transform_.Delta.Y - static_cast<int>(FiredBullet->GetHeight());
 
-    GameEngine::Instance().Instantiate(new Bullet(Faction_, CurrentBulletType), BulletTransform, BulletDelta);
+    GameEngine::Instance().Instantiate(FiredBullet, BulletTransform, BulletDelta);
 }

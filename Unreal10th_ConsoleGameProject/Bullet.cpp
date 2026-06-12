@@ -113,7 +113,6 @@ void Bullet::Initialize(const Transform InTransform, const Vector2 InDelta)
 {
     const BulletSpec Spec = BulletSpecs.at(BulletType_);
 
-    //Transform_.Position = InTransform.Position + Spec.BarrelOffset;
     Transform_.Position = InTransform.Position;
     Transform_.Width = Spec.Width;
     Transform_.Height = Spec.Height;
