@@ -11,8 +11,6 @@ Ground::Ground()
     Collider_.Initialize(Transform_);
     //CollisionLayer_ = CollisionLayer::Ground;
 
-    bUseGravity_ = false;
-
     RenderString_.reserve(Transform_.Width * Transform_.Height);
     for (int i = 0; i < Transform_.Height; i++)
     {
@@ -39,8 +37,6 @@ Ground::Ground(int InX, int InY, size_t InWidth, size_t InHeight)
     Collider_.Initialize(Transform_);
     //CollisionLayer_ = CollisionLayer::Ground;
 
-    bUseGravity_ = false;
-
     RenderString_.reserve(Transform_.Width * Transform_.Height);
     for (int i = 0; i < Transform_.Height; i++)
     {
@@ -64,7 +60,7 @@ void Ground::OnCollisionEnter(GameObject* Other)
         return;
     }
 
-    Other->SetUseGravity(false);
+    //Other->SetUseGravity(false);
 }
 
 void Ground::OnCollisionExit(GameObject* Other)
@@ -84,6 +80,6 @@ void Ground::OnCollisionExit(GameObject* Other)
 
     if (!IsCollidedWithGround)
     {
-        Other->SetUseGravity(true);
+        //Other->SetUseGravity(true);
     }
 }

@@ -16,11 +16,6 @@ Wall::Wall(int InX, int InY, size_t InWidth, size_t InHeight)
     NextPosition_ = Transform_.Position;
     Collider_ = Collider(Transform_, CollisionLayer::Wall);
 
-    //Collider_.Initialize(Transform_);
-    //CollisionLayer_ = CollisionLayer::Wall;
-
-    bUseGravity_ = false;
-
     RenderString_.reserve(Transform_.Width * Transform_.Height);
     for (int i = 0; i < Transform_.Height; i++)
     {

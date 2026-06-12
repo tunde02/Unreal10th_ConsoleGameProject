@@ -241,7 +241,8 @@ void BaseScene::Update()
             {
                 if (Obj->GetNextMaxX() > CurrentCollider->GetNextMinX()
                     && Obj->GetNextMinX() <= CurrentCollider->GetNextMaxX()
-                    && Obj->GetUseGravity())
+                    //&& Obj->GetUseGravity())
+                    )
                 {
                     Obj->CancelXMove();
                 }
@@ -250,7 +251,8 @@ void BaseScene::Update()
             {
                 if (Obj->GetNextMinX() < CurrentCollider->GetNextMaxX()
                     && Obj->GetNextMaxX() >= CurrentCollider->GetNextMinX()
-                    && Obj->GetUseGravity())
+                    //&& Obj->GetUseGravity())
+                    )
                 {
                     Obj->CancelXMove();
                 }
