@@ -29,7 +29,7 @@ Vector2 Vector2::operator*(const int multiplier) const
     Result.X = this->X * multiplier;
     Result.Y = this->Y * multiplier;
 
-    return Result;
+    return Result;;
 }
 
 Vector2& Vector2::operator=(const Vector2& other)

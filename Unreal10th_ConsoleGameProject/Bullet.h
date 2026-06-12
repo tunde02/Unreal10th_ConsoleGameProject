@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <Windows.h>
 #include "GameObject.h"
 #include <unordered_map>
 

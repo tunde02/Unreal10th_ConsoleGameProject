@@ -1,5 +1,5 @@
-﻿#include <Windows.h>
-#include "MenuScene.h"
+﻿#include "MenuScene.h"
+#include <Windows.h>
 #include <iostream>
 
 void MenuScene1::Enter() { std::cout << "▶ [MenuScene] 진입: 타이틀 메뉴 생성" << std::endl; }

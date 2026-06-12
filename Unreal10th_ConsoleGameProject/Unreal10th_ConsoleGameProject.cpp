@@ -1,7 +1,7 @@
-﻿#include <Windows.h>
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 #include <string>
+#include <Windows.h>
 
 // 콘솔 크기 정의
 const int WIDTH = 80;
