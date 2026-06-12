@@ -18,18 +18,18 @@ BaseScene::~BaseScene()
     SceneObjects.clear();
 }
 
-GameObject* BaseScene::Instantiate(GameObject* InGameObject, const Transform& InTransform, const Vector2& InDelta)
+GameObject* BaseScene::Instantiate(GameObject* InGameObject, const Transform& InTransform, const Vector2& InDelta, float InTimer)
 {
     GameObject* NewGameObject = InGameObject;
     NewGameObject->Initialize(InTransform, InDelta);
 
-    InstantiateRequests.push_back(InstantiateRequest{ NewGameObject, InTransform, InDelta });
+    InstantiateRequests.push_back(InstantiateRequest{ NewGameObject, InTransform, InDelta, InTimer });
     //SceneObjects.push_back(NewGameObject);
 
     return NewGameObject;
 }
 
-GameObject* BaseScene::Instantiate(const GameObjectType InGameObjectType, const Transform& InTransform, const Vector2& InDelta)
+GameObject* BaseScene::Instantiate(GameObjectType InGameObjectType, const Transform& InTransform, const Vector2& InDelta, float InTimer)
 {
     GameObject* NewGameObject = nullptr;
     switch (InGameObjectType)
@@ -53,7 +53,7 @@ GameObject* BaseScene::Instantiate(const GameObjectType InGameObjectType, const 
         return nullptr;
     }
 
-    InstantiateRequests.push_back(InstantiateRequest{ NewGameObject, InTransform, InDelta });
+    InstantiateRequests.push_back(InstantiateRequest{ NewGameObject, InTransform, InDelta, InTimer });
     //SceneObjects.push_back(NewGameObject);
 
     return NewGameObject;
@@ -63,13 +63,11 @@ void BaseScene::Update()
 {
     for (auto& Request : InstantiateRequests)
     {
+        Request.Timer -= GameEngine::Instance().GetFixedDeltaTime();
+
         if (Request.Timer <= 0.0f)
         {
             SceneObjects.push_back(Request.Object);
-        }
-        else
-        {
-            Request.Timer -= GameEngine::Instance().GetFixedDeltaTime();
         }
     }
 

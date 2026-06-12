@@ -1,7 +1,6 @@
 ﻿#include "Stage1Scene.h"
 #include "Player.h"
 #include "Monster.h"
-#include "Ground.h"
 #include "Wall.h"
 #include "Bullet.h"
 
@@ -23,7 +22,13 @@ void Stage1Scene::Enter()
     //SceneObjects.push_back(new Bullet(Transform{}, Vector2{}, Faction::Monster, 2));
     //SceneObjects.push_back(new Monster(2, 2));
     //SceneObjects.push_back(new Monster(4, 2));
-    SceneObjects.push_back(new Monster(10, 2));
+    // 
+    //SceneObjects.push_back(new Monster(10, 2));
+    Transform t{ 5, 2, 0, 0, 2, 2 };
+    for (int i = 0; i < 100; i++)
+    {
+        Instantiate(new Monster(10, 2), t, {}, static_cast<float>(i) / 30);
+    }
     Player_ = new Player();
     SceneObjects.push_back(Player_);
 }
