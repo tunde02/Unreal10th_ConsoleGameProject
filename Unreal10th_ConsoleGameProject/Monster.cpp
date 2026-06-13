@@ -1,8 +1,6 @@
 ﻿#include "Monster.h"
 #include "GameEngine.h"
 
-#include <stdlib.h>
-
 Monster::Monster()
 {
     MonsterType_ = MonsterType::Default;
@@ -14,7 +12,7 @@ Monster::Monster()
     Hp = Spec.Hp;
     Damage = Spec.Damage;
     Speed = Spec.Speed;
-    UpdatePeriod_ = 0.05f / Speed;
+    UpdatePeriod_ = GameEngine::Instance().GetFixedDeltaTime() / Speed;
     RenderString_ = Spec.RenderString;
 }
 
@@ -62,7 +60,7 @@ Monster::Monster(MonsterType InMonsterType)
     Hp = Spec.Hp;
     Damage = Spec.Damage;
     Speed = Spec.Speed;
-    UpdatePeriod_ = 0.05f / Speed;
+    UpdatePeriod_ = GameEngine::Instance().GetFixedDeltaTime() / Speed;
     RenderString_ = Spec.RenderString;
 }
 

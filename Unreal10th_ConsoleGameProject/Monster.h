@@ -35,9 +35,9 @@ private:
                 MonsterType::Default,
                 5,
                 3,
-                5,
+                3,
                 1,
-                1.0f,
+                0.6f,
                 {
                     L"█ ░ █",
                     L"▓███▓",
@@ -51,7 +51,7 @@ private:
                 MonsterType::TripleShot,
                 7,
                 5,
-                10,
+                5,
                 1,
                 0.5f,
                 {
@@ -69,7 +69,7 @@ private:
                 MonsterType::Settled,
                 7,
                 5,
-                20,
+                10,
                 2,
                 0.0f,
                 {
@@ -87,7 +87,7 @@ private:
                 MonsterType::Boss,
                 8,
                 4,
-                100,
+                50,
                 5,
                 0.2f,
                 {

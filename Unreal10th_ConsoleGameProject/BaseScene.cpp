@@ -202,15 +202,14 @@ void BaseScene::Update()
         {
             Obj->Destroy();
         }
+        if (!(0 <= Obj->GetNextMinY() && Obj->GetNextMaxY() < Height_))
+        {
+            Obj->Destroy();
+        }
 
         //if (!(0 <= Obj->GetNextMinX() && Obj->GetNextMaxX() < Width_))
         //{
         //    Obj->CancelXMove();
-        //    //Obj->OnCollisionEnter(nullptr);
-        //}
-        //if (!(0 <= Obj->GetNextMinY() && Obj->GetNextMaxY() < Height_))
-        //{
-        //    Obj->CancelYMove();
         //    //Obj->OnCollisionEnter(nullptr);
         //}
     }
@@ -317,11 +316,11 @@ void BaseScene::RenderStatus()
     for (size_t i = StatusStartX; i < Width_; i++)
     {
         Screen[0][i] = L'█';
-        Screen[Height_ - 1][i] = L'█';
+        Screen[Height_ - 2][i] = L'█';
     }
 
     // 오른쪽 테두리
-    for (size_t i = 0; i < Height_; i++)
+    for (size_t i = 1; i < Height_ - 2; i++)
     {
         Screen[i][Width_ - 1] = L'█';
     }

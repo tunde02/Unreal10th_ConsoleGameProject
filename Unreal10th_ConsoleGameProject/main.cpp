@@ -18,14 +18,14 @@
 //      - 플레이어가 생성자 호출하여 Bullet 생성 - Instantiate() Initialize(Transform, Delta) 호출 순으로 오브젝트를 스폰한다
 //      - OffsetX : Player.Width/2 - Bullet.Width/2
 //      - OffsetY : -Bullet.Height
-//  [ ] 몬스터
+//  [~] 몬스터
 //      - 그냥 튀어나와서 일정 방향으로 나아가는 몬스터. 밑 테두리를 벗어나면 없어짐
 //      - 튀어나와서 일정 방향으로 이동하며 탄막도 무작위로 흩뿌리는 몬스터
 //      - 일정 위치를 고수하며 일정 방향으로 탄막을 쏘는 몬스터
 //  [x] 총알이 플레이어보다 느려서 발사하고 위로 올라가면 총알이랑 플레이어랑 겹치고 있음
 //      - 총알 속도를 좀 빠르게 해야할 듯
 //  [x] 총알은 enum BulletSize에 따라 프리셋이 있어야 할 듯
-//  [ ] 오브젝트들 생성자 정리
+//  [x] 오브젝트들 생성자 정리
 //      - Instantiate() 에서 GameObject->Initialize()해서 생성자에서 하는 일을 굳이 또 하는 느낌. 생성자 정리할 때 확실히 하자
 //  [x] 플레이어에 발사 딜레이 추가
 //  [ ] BaseScene.RenderSceneObjects()에서 플레이어를 제일 나중에 그리도록 변경

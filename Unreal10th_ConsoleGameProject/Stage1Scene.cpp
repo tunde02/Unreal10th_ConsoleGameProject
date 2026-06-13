@@ -14,10 +14,10 @@ void Stage1Scene::Enter()
 
     // Stage 1 전용 오브젝트 배치
 
-    SceneObjects.push_back(new Wall(0, 0, 1, 48));
-    SceneObjects.push_back(new Wall(60, 0, 1, 48));
-    SceneObjects.push_back(new Wall(1, 0, 59, 1));
-    SceneObjects.push_back(new Wall(1, 47, 59, 1));
+    SceneObjects.push_back(new Wall(0, 0, 1, 47)); // Left
+    SceneObjects.push_back(new Wall(60, 0, 1, 47)); // Right
+    SceneObjects.push_back(new Wall(1, 0, 59, 1)); // Top
+    SceneObjects.push_back(new Wall(1, 46, 59, 1)); // Bottom
     //SceneObjects.push_back(new Bullet(Transform{}, Vector2{}, Faction::Monster, 2));
     //SceneObjects.push_back(new Monster(2, 2));
     //SceneObjects.push_back(new Monster(4, 2));
