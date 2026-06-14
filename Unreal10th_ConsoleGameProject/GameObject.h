@@ -28,9 +28,9 @@ public:
     virtual void OnCollisionEnter(GameObject* Other) {}
     virtual void OnCollisionStay(GameObject* Other) {}
     virtual void OnCollisionExit(GameObject* Other) {}
+    virtual void TakeDamage(int InDamage);
 
     void UpdateCollisions();
-    void TakeDamage(int InDamage);
 
     inline void Destroy() { Transform_.Width = 0; Transform_.Height = 0; bIsDestroyed_ = true; }
     inline bool IsDestroyed() const { return bIsDestroyed_; }
