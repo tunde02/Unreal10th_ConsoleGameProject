@@ -30,6 +30,7 @@ void Player::Update()
     if (InvincibleTimer > InvincibleDuration)
     {
         InvincibleTimer = 0.0f;
+        bCanCollide = true;
         ChangePlayerState(PlayerState::Normal);
     }
 
@@ -90,17 +91,7 @@ void Player::Update()
 
 void Player::OnCollisionEnter(GameObject* Other)
 {
-    if (Other->GetCollisionLayer() == CollisionLayer::Wall)
-    {
-        if (Delta_.X > 0.0f && Transform_.Position.X > Other->GetPosition().X)
-        {
 
-        }
-        else if (Delta_.X < 0.0f && Transform_.Position.X < Other->GetPosition().X)
-        {
-
-        }
-    }
 }
 
 void Player::OnCollisionExit(GameObject* Other)
@@ -115,6 +106,7 @@ void Player::TakeDamage(int InDamage)
     }
 
     GameObject::TakeDamage(InDamage);
+    bCanCollide = false;
     ChangePlayerState(PlayerState::Invincible);
 }
 

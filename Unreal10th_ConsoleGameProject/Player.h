@@ -30,4 +30,5 @@ public:
     void FireBullet() const;
 
     inline int GetHp() const { return Hp; }
+    inline bool IsInvincible() const { return CurrentPlayerState == PlayerState::Invincible; }
 };
